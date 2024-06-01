@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: darwin-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: darwin-app
+  template:
+    metadata:
+      labels:
+        app: darwin-app
+    spec:
+      containers:
+      - name: darwin-container
+        image: nginx:latest
+        ports:
+        - containerPort: 443
+        readinessProbe:
+          httpGet:
+            path: /darwin-probes
+            port: 443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /darwin-probes
+            port: 443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
