@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: more-pod-vol
+spec:
+  containers:
+    - image: nginx:latest
+      name: ngin1
+      volumeMounts:
+      - mountPath: /centos
+        name: demo
+    - image: alpine:latest
+      name: alpine1
+      command:
+        - sleep
+        - "3600"
+      volumeMounts:
+      - mountPath: /centos
+        name: demo
+  volumes:
+  - name: demo
+    emptyDir: {}
