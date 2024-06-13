@@ -1,0 +1,15 @@
+# sc-nfs.yaml
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-storage
+provisioner: cluster.local/nfs-subdir-external-provisioner
+parameters:
+  server: 192.168.174.139
+  share: /nfsexport
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - hard
+  - nfsvers=4.1

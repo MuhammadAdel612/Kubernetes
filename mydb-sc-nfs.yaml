@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: maria-pod-new
+spec:
+  containers:
+    - name: newdb
+      image: mariadb
+      env:
+      - name: MARIADB_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+             name: mysecret
+             key: MARIADB_ROOT_PASSWORD
+      volumeMounts:
+      - mountPath: "/var/lib/mysql"
+        name: ourdb
+  volumes:
+    - name: ourdb
+      persistentVolumeClaim:
+        claimName: claim-pvc
+
