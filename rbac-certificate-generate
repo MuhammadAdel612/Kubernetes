@@ -1,0 +1,18 @@
+#generate key for certificate signing request 
+$openssl genrsa --out adel.key 2048
+
+#generate  certificate signing request
+$openssl req -new -key adel.key -out adel.csr -subj "/CN=adel/O=dev/O=example.local" 
+
+#siging certificate by kubernetes
+$sudo openssl x509 -req -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -days 900 -in adel.csr -out adel.crt
+
+#add user to kubernetes config file
+$kubectl config set-credentials adel --client-certificate adel.crt --client-key adel.key 
+$kubectl config set-context adel-k8s --cluster=kubernetes --user=adel --namespace=default
+
+#show contexts
+$ kubectl config use-context=adel-k8s
+
+#switch to the added user 
+$kubectl config use-context adel-k8s
